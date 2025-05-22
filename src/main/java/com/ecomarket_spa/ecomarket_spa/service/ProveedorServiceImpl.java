@@ -1,4 +1,4 @@
-package com.ecomarket_spa.ecomarket_spa.service.impl;
+package com.ecomarket_spa.ecomarket_spa.service;
 
 import com.ecomarket_spa.ecomarket_spa.model.Proveedor;
 import com.ecomarket_spa.ecomarket_spa.repository.ProveedorRepository;
