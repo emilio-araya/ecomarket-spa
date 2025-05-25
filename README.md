@@ -1,4 +1,4 @@
-# 🌱 Ecomarket-SPA – Sistema de Venta para Empreza Ecológicos
+# 🌱 Ecomarket-SPA – Sistema de Venta de articulos  Ecológicos
 
 Sistema desarrollado para apoyar la gestión de ventas de productos ecológicos . Utiliza arquitectura de microservicios con Spring Boot y una estructura escalable y mantenible.
 
@@ -19,12 +19,21 @@ Este proyecto utiliza **arquitectura de microservicios**:
 
 que serian los siguientes 
 
-ecomarket-spa/
-├── productos-service/ # Gestión de productos
-├── compras-service/ # Manejo de compras y pedidos
-├── usuarios-service/ # Autenticación y roles
-├── config-server/ # Configuración centralizada
-└── gateway/ # API Gateway para enrutar tráfico
+ 
+ 1.productos-service/ 
+# Gestión de productos
+
+2.compras-service/ 
+# Manejo de compras y pedidos
+
+3.usuarios-service/
+# Autenticación y roles
+
+ 4.config-server/
+# Configuración centralizada
+
+5.gateway/
+# API Gateway para enrutar tráfico
 
 
 Cada servicio se comunica a través de una API Gateway y está pensado para ser independiente y escalable.
