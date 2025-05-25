@@ -1,8 +1,6 @@
-# 🌱 Ecomarket-SPA – Sistema de Venta para Feria Agroecológica
+# 🌱 Ecomarket-SPA – Sistema de Venta para Empreza Ecológicos
 
-Sistema desarrollado para apoyar la gestión de ventas de productos agroecológicos en una feria local. Utiliza arquitectura de microservicios con Spring Boot y una estructura escalable y mantenible.
-
----
+Sistema desarrollado para apoyar la gestión de ventas de productos ecológicos . Utiliza arquitectura de microservicios con Spring Boot y una estructura escalable y mantenible.
 
 ## 🧩 Tecnologías Utilizadas
 
@@ -13,13 +11,13 @@ Sistema desarrollado para apoyar la gestión de ventas de productos agroecológi
   - Spring Security
 - **Base de datos:** MySQL / H2
 - **Maven**
-- **Docker** (opcional en futuras versiones)
 
----
 
 ## 🧱 Arquitectura
 
-Este proyecto utiliza **arquitectura de microservicios** con los siguientes módulos:
+Este proyecto utiliza **arquitectura de microservicios**:
+
+que serian los siguientes 
 
 ecomarket-spa/
 ├── productos-service/ # Gestión de productos
@@ -29,22 +27,7 @@ ecomarket-spa/
 └── gateway/ # API Gateway para enrutar tráfico
 
 
-
----
-
-## 🚀 Cómo Ejecutar
-
-1. Clonar el repositorio:
-```bash
-git clone https://github.com/emilio-araya/ecomarket-spa.git
-
-Importar como proyecto Maven en tu IDE (IntelliJ, Eclipse, etc.)
-
-Ejecutar cada microservicio desde su carpeta:
-
-
-cd productos-service
-mvn spring-boot:run
+Cada servicio se comunica a través de una API Gateway y está pensado para ser independiente y escalable.
 
 ✅ Funcionalidades
 🛒 Registro y gestión de productos
@@ -56,3 +39,4 @@ mvn spring-boot:run
 ⚙️ Configuración centralizada
 
 📦 Arquitectura desacoplada y escalable
+
