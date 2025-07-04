@@ -72,11 +72,25 @@
             <version>5.10.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- OpenAPI / Swagger UI para documentación -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+
+        <!-- Spring HATEOAS para hipermedios -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Compiler plugin with Lombok annotation processing -->
+            <!-- Compiler plugin con procesamiento de anotaciones Lombok -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
