@@ -1,0 +1,45 @@
+-- Creación de tablas
+CREATE TABLE categoria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE proveedor (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    telefono VARCHAR(20),
+    email VARCHAR(100)
+);
+
+CREATE TABLE producto (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    descripcion TEXT,
+    precio DECIMAL(10,2) NOT NULL,
+    categoria_id INT,
+    proveedor_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES categoria(id),
+    FOREIGN KEY (proveedor_id) REFERENCES proveedor(id)
+);
+
+-- Inserción de datos en categoria
+INSERT INTO categoria (nombre) VALUES
+('Electrónica'),
+('Hogar'),
+('Jardinería'),
+('Ropa');
+
+-- Inserción de datos en proveedor
+INSERT INTO proveedor (nombre, telefono, email) VALUES
+('Proveedores S.A.', '123456789', 'contacto@proveedoressa.com'),
+('Distribuciones XYZ', '987654321', 'ventas@distribucionesxyz.com'),
+('Importadora Central', '555123456', 'info@importadoracentral.cl');
+
+-- Inserción de datos en producto
+INSERT INTO producto (nombre, descripcion, precio, categoria_id, proveedor_id) VALUES
+('Bombilla LED', 'Bombilla LED de bajo consumo', 3500.00, 1, 1),
+('Cortacésped', 'Cortacésped eléctrico para jardín', 85000.00, 3, 2),
+('Camisa Casual', 'Camisa de algodón talla M', 12000.00, 4, 3),
+('Aspiradora', 'Aspiradora potente con bolsa', 45000.00, 2, 1),
+('Manguera de Riego', 'Manguera flexible para riego', 15000.00, 3, 2);
+
