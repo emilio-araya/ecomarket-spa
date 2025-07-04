@@ -1,0 +1,143 @@
+package com.ecomarket_spa.ecomarket_spa.service;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Arrays;
+
+import com.ecomarket_spa.ecomarket_spa.model.Proveedor;
+import com.ecomarket_spa.ecomarket_spa.repository.ProveedorRepository;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
+class ProveedorServiceTest {
+
+    @Mock
+    private ProveedorRepository proveedorRepository;
+
+    @InjectMocks
+    private ProveedorServiceImpl proveedorService;
+
+    @Test
+    void guardarProveedor_deberiaGuardarYRetornarProveedor() {
+        Proveedor p = new Proveedor(null, "Proveedor A", "123456789", "Direccion A");
+        Proveedor pGuardado = new Proveedor(1L, "Proveedor A", "123456789", "Direccion A");
+
+        when(proveedorRepository.save(p)).thenReturn(pGuardado);
+
+        Proveedor resultado = proveedorService.guardarProveedor(p);
+
+        assertNotNull(resultado.getId());
+        assertEquals("Proveedor A", resultado.getNombre());
+        verify(proveedorRepository).save(p);
+    }
+
+    @Test
+    void obtenerProveedorPorId_existente_retornaProveedor() {
+        Proveedor p = new Proveedor(1L, "Proveedor B", "987654321", "Direccion B");
+        when(proveedorRepository.findById(1L)).thenReturn(Optional.of(p));
+
+        Proveedor resultado = proveedorService.obtenerProveedorPorId(1L);
+
+        assertNotNull(resultado);
+        assertEquals("Proveedor B", resultado.getNombre());
+        verify(proveedorRepository).findById(1L);
+    }
+
+    @Test
+    void obtenerProveedorPorId_noExistente_retornaNull() {
+        when(proveedorRepository.findById(99L)).thenReturn(Optional.empty());
+
+        Proveedor resultado = proveedorService.obtenerProveedorPorId(99L);
+
+        assertNull(resultado);
+        verify(proveedorRepository).findById(99L);
+    }
+
+    @Test
+    void listarProveedores_retornaListaDeProveedores() {
+        List<Proveedor> lista = Arrays.asList(
+            new Proveedor(1L, "Proveedor 1", "11111111", "Direccion 1"),
+            new Proveedor(2L, "Proveedor 2", "22222222", "Direccion 2")
+        );
+        when(proveedorRepository.findAll()).thenReturn(lista);
+
+        List<Proveedor> resultado = proveedorService.listarProveedores();
+
+        assertEquals(2, resultado.size());
+        verify(proveedorRepository).findAll();
+    }
+
+    @Test
+    void actualizarProveedor_existente_actualizaYRetorna() {
+        Proveedor existente = new Proveedor(1L, "Proveedor X", "11111111", "Direccion X");
+        Proveedor actualizado = new Proveedor(null, "Proveedor X Mod", "99999999", "Direccion Mod");
+
+        when(proveedorRepository.findById(1L)).thenReturn(Optional.of(existente));
+        when(proveedorRepository.save(any(Proveedor.class))).thenAnswer(i -> i.getArgument(0));
+
+        Proveedor resultado = proveedorService.actualizarProveedor(1L, actualizado);
+
+        assertNotNull(resultado);
+        assertEquals("Proveedor X Mod", resultado.getNombre());
+        assertEquals("99999999", resultado.getTelefono());
+        verify(proveedorRepository).findById(1L);
+        verify(proveedorRepository).save(existente);
+    }
+
+    @Test
+    void actualizarProveedor_noExistente_retornaNull() {
+        Proveedor actualizado = new Proveedor(null, "Proveedor No Existe", "00000000", "Direccion No Existe");
+        when(proveedorRepository.findById(99L)).thenReturn(Optional.empty());
+
+        Proveedor resultado = proveedorService.actualizarProveedor(99L, actualizado);
+
+        assertNull(resultado);
+        verify(proveedorRepository).findById(99L);
+        verify(proveedorRepository, never()).save(any());
+    }
+
+    @Test
+    void eliminarProveedor_existente_retornaTrue() {
+        when(proveedorRepository.existsById(1L)).thenReturn(true);
+        doNothing().when(proveedorRepository).deleteById(1L);
+
+        boolean resultado = proveedorService.eliminarProveedor(1L);
+
+        assertTrue(resultado);
+        verify(proveedorRepository).existsById(1L);
+        verify(proveedorRepository).deleteById(1L);
+    }
+
+    @Test
+    void eliminarProveedor_noExistente_retornaFalse() {
+        when(proveedorRepository.existsById(99L)).thenReturn(false);
+
+        boolean resultado = proveedorService.eliminarProveedor(99L);
+
+        assertFalse(resultado);
+        verify(proveedorRepository).existsById(99L);
+        verify(proveedorRepository, never()).deleteById(anyLong());
+    }
+
+    @Test
+    void buscarProveedoresPorNombre_retornaListaFiltrada() {
+        List<Proveedor> lista = Arrays.asList(
+            new Proveedor(1L, "Proveedor Uno", "123", "Dir 1"),
+            new Proveedor(2L, "Proveedor Dos", "456", "Dir 2")
+        );
+        when(proveedorRepository.findByNombreContainingIgnoreCase("Proveedor")).thenReturn(lista);
+
+        List<Proveedor> resultado = proveedorService.buscarProveedoresPorNombre("Proveedor");
+
+        assertEquals(2, resultado.size());
+        verify(proveedorRepository).findByNombreContainingIgnoreCase("Proveedor");
+    }
+}
