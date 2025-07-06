@@ -2,15 +2,21 @@ package com.ecomarket_spa.ecomarket_spa.controller;
 
 import com.ecomarket_spa.ecomarket_spa.model.Proveedor;
 import com.ecomarket_spa.ecomarket_spa.service.ProveedorService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/proveedores")
@@ -23,52 +29,77 @@ public class ProveedorController {
 
     @Operation(summary = "Crear un nuevo proveedor")
     @PostMapping
-    public ResponseEntity<Proveedor> crearProveedor(@RequestBody Proveedor proveedor) {
+    public ResponseEntity<EntityModel<Proveedor>> crearProveedor(@RequestBody Proveedor proveedor) {
         Proveedor nuevoProveedor = proveedorService.guardarProveedor(proveedor);
-        return new ResponseEntity<>(nuevoProveedor, HttpStatus.CREATED);
+        EntityModel<Proveedor> proveedorModel = toModel(nuevoProveedor);
+        return new ResponseEntity<>(proveedorModel, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Obtener proveedor por ID")
     @GetMapping("/{id}")
-    public ResponseEntity<Proveedor> obtenerProveedor(@PathVariable Long id) {
+    public ResponseEntity<EntityModel<Proveedor>> obtenerProveedor(@PathVariable Long id) {
         Proveedor proveedor = proveedorService.obtenerProveedorPorId(id);
         if (proveedor == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(proveedor, HttpStatus.OK);
+        return ResponseEntity.ok(toModel(proveedor));
     }
 
     @Operation(summary = "Listar todos los proveedores")
     @GetMapping
-    public ResponseEntity<List<Proveedor>> listarProveedores() {
+    public ResponseEntity<CollectionModel<EntityModel<Proveedor>>> listarProveedores() {
         List<Proveedor> proveedores = proveedorService.listarProveedores();
-        return new ResponseEntity<>(proveedores, HttpStatus.OK);
+
+        List<EntityModel<Proveedor>> proveedorModels = proveedores.stream()
+            .map(this::toModel)
+            .collect(Collectors.toList());
+
+        CollectionModel<EntityModel<Proveedor>> collectionModel =
+            CollectionModel.of(proveedorModels,
+                linkTo(methodOn(ProveedorController.class).listarProveedores()).withSelfRel());
+
+        return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 
     @Operation(summary = "Actualizar un proveedor por ID")
     @PutMapping("/{id}")
-    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) {
+    public ResponseEntity<EntityModel<Proveedor>> actualizarProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) {
         Proveedor actualizado = proveedorService.actualizarProveedor(id, proveedor);
         if (actualizado == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(actualizado, HttpStatus.OK);
+        return ResponseEntity.ok(toModel(actualizado));
     }
 
     @Operation(summary = "Eliminar proveedor por ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProveedor(@PathVariable Long id) {
         boolean eliminado = proveedorService.eliminarProveedor(id);
-        if (!eliminado) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return eliminado
+            ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
+            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @Operation(summary = "Buscar proveedores por nombre")
     @GetMapping("/buscar")
-    public ResponseEntity<List<Proveedor>> buscarPorNombre(@RequestParam String nombre) {
+    public ResponseEntity<CollectionModel<EntityModel<Proveedor>>> buscarPorNombre(@RequestParam String nombre) {
         List<Proveedor> proveedores = proveedorService.buscarProveedoresPorNombre(nombre);
-        return new ResponseEntity<>(proveedores, HttpStatus.OK);
+
+        List<EntityModel<Proveedor>> proveedorModels = proveedores.stream()
+            .map(this::toModel)
+            .collect(Collectors.toList());
+
+        CollectionModel<EntityModel<Proveedor>> collectionModel =
+            CollectionModel.of(proveedorModels,
+                linkTo(methodOn(ProveedorController.class).buscarPorNombre(nombre)).withSelfRel());
+
+        return new ResponseEntity<>(collectionModel, HttpStatus.OK);
+    }
+
+    // HATEOAS helper
+    private EntityModel<Proveedor> toModel(Proveedor proveedor) {
+        return EntityModel.of(proveedor,
+            linkTo(methodOn(ProveedorController.class).obtenerProveedor(proveedor.getId())).withSelfRel(),
+            linkTo(methodOn(ProveedorController.class).listarProveedores()).withRel("proveedores"));
     }
 }
