@@ -1,51 +1,44 @@
-# 🌱 Ecomarket-SPA – Sistema de Venta de articulos  Ecológicos
+# 🌱 Ecomarket-SPA – Sistema Backend para Gestión de Venta de Productos Ecológicos
 
-Sistema desarrollado para apoyar la gestión de ventas de productos ecológicos . Utiliza arquitectura de microservicios con Spring Boot y una estructura escalable y mantenible.
+Este proyecto backend está diseñado para apoyar la gestión de ventas de productos ecológicos, implementado bajo una arquitectura de microservicios con Spring Boot. Su estructura modular garantiza escalabilidad, mantenibilidad y fácil extensión.
 
 ## 🧩 Tecnologías Utilizadas
 
-- **Java 17**
-- **Spring Boot 3**
-  - Spring Web
-  - Spring Data JPA
-  - Spring Security
-- **Base de datos:** MySQL / H2
-- **Maven**
+- **Java 17**  
+- **Spring Boot 3**  
+  - Spring Web  
+  - Spring Data JPA  
+  - Spring Security  
+- **Base de datos:** MySQL / H2 (entorno de pruebas)  
+- **Maven** para gestión de dependencias y ciclo de vida del proyecto  
 
+## 🧱 Arquitectura de Microservicios
 
-## 🧱 Arquitectura
+El sistema está compuesto por los siguientes microservicios independientes y escalables, comunicándose a través de una API Gateway:
 
-Este proyecto utiliza **arquitectura de microservicios**:
+1. **productos-service**  
+   - Gestión integral de productos: creación, actualización, eliminación y consulta.
 
-que serian los siguientes 
+2. **compras-service**  
+   - Manejo de compras y pedidos, procesamiento de transacciones.
 
- 
- 1.productos-service/ 
-# Gestión de productos
+3. **usuarios-service**  
+   - Autenticación, autorización y gestión de roles, implementado con Spring Security.
 
-2.compras-service/ 
-# Manejo de compras y pedidos
+4. **config-server**  
+   - Configuración centralizada para los distintos microservicios, facilitando la gestión de parámetros.
 
-3.usuarios-service/
-# Autenticación y roles
+5. **gateway**  
+   - API Gateway encargado de enrutar el tráfico y unificar el acceso a los servicios.
 
- 4.config-server/
-# Configuración centralizada
+## ✅ Funcionalidades Principales
 
-5.gateway/
-# API Gateway para enrutar tráfico
+- Gestión completa de productos con operaciones CRUD.  
+- Proceso de compras optimizado con control de stock y pedidos.  
+- Seguridad robusta mediante autenticación y autorización.  
+- Configuración centralizada para mayor flexibilidad.  
+- Arquitectura desacoplada que permite escalabilidad y mantenimiento sencillo.
 
+---
 
-Cada servicio se comunica a través de una API Gateway y está pensado para ser independiente y escalable.
-
-✅ Funcionalidades
-🛒 Registro y gestión de productos
-
-🧾 Proceso de compras
-
-🔐 Autenticación y autorización (Spring Security)
-
-⚙️ Configuración centralizada
-
-📦 Arquitectura desacoplada y escalable
-
+Este backend está preparado para integrarse en entornos fullstack, facilitando la expansión y adaptación según necesidades futuras.  
