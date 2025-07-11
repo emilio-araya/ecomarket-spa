@@ -31,6 +31,10 @@ El sistema está compuesto por los siguientes microservicios independientes y es
 5. **gateway**  
    - API Gateway encargado de enrutar el tráfico y unificar el acceso a los servicios.
 
+## Nota sobre despliegue
+
+Este proyecto está diseñado para ser fácilmente desplegado en entornos productivos y en la nube, sin embargo, debido a los alcances establecidos en la pauta de evaluación, la etapa de despliegue en la nube no fue implementada ni evaluada en este trabajo.
+
 ## ✅ Funcionalidades Principales
 
 - Gestión completa de productos con operaciones CRUD.  
