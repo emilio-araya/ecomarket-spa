@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import jakarta.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +21,11 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class ProductoController {
 
-    @Autowired
-    private ProductoService productoService;
+    private final ProductoService productoService;
+
+    public ProductoController(ProductoService productoService) {
+        this.productoService = productoService;
+    }
 
     @Operation(summary = "Crear un nuevo producto")
     @PostMapping
@@ -43,11 +45,7 @@ public class ProductoController {
     @Operation(summary = "Obtener un producto por ID")
     @GetMapping("/{id}")
     public ResponseEntity<Producto> obtenerProducto(@PathVariable Long id) {
-        Producto producto = productoService.obtenerProductoPorId(id);
-        if (producto == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return ResponseEntity.ok(producto);
+        return ResponseEntity.ok(productoService.obtenerProductoPorId(id));
     }
 
     @Operation(summary = "Listar todos los productos")
@@ -69,19 +67,14 @@ public class ProductoController {
                 dto.getCategoria()
             )
         );
-        if (actualizado == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
         return ResponseEntity.ok(actualizado);
     }
 
     @Operation(summary = "Eliminar un producto por ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id) {
-        boolean eliminado = productoService.eliminarProducto(id);
-        return eliminado
-            ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-            : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        productoService.eliminarProducto(id);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Buscar productos por nombre")
