@@ -6,7 +6,6 @@ import com.ecomarket_spa.ecomarket_spa.service.ProveedorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -24,8 +23,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @Tag(name = "Proveedores", description = "CRUD de proveedores del sistema")
 public class ProveedorController {
 
-    @Autowired
-    private ProveedorService proveedorService;
+    private final ProveedorService proveedorService;
+
+    public ProveedorController(ProveedorService proveedorService) {
+        this.proveedorService = proveedorService;
+    }
 
     @Operation(summary = "Crear un nuevo proveedor")
     @PostMapping
@@ -96,7 +98,6 @@ public class ProveedorController {
         return new ResponseEntity<>(collectionModel, HttpStatus.OK);
     }
 
-    // HATEOAS helper
     private EntityModel<Proveedor> toModel(Proveedor proveedor) {
         return EntityModel.of(proveedor,
             linkTo(methodOn(ProveedorController.class).obtenerProveedor(proveedor.getId())).withSelfRel(),
