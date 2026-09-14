@@ -2,7 +2,6 @@ package com.ecomarket_spa.ecomarket_spa.service;
 
 import com.ecomarket_spa.ecomarket_spa.model.Producto;
 import com.ecomarket_spa.ecomarket_spa.repository.ProductoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,8 +10,11 @@ import java.util.NoSuchElementException;
 @Service
 public class ProductoServiceImpl implements ProductoService {
 
-    @Autowired
-    private ProductoRepository productoRepository;
+    private final ProductoRepository productoRepository;
+
+    public ProductoServiceImpl(ProductoRepository productoRepository) {
+        this.productoRepository = productoRepository;
+    }
 
     @Override
     public Producto guardarProducto(Producto producto) {
