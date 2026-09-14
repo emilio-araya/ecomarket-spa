@@ -1,48 +1,101 @@
-# 🌱 Ecomarket-SPA – Sistema Backend para Gestión de Venta de Productos Ecológicos
+# 🌱 Ecomarket-SPA – Backend REST para Gestión de Productos
 
-Este proyecto backend está diseñado para apoyar la gestión de ventas de productos ecológicos, implementado bajo una arquitectura de microservicios con Spring Boot. Su estructura modular garantiza escalabilidad, mantenibilidad y fácil extensión.
+Backend académico desarrollado con **Java 17 y Spring Boot** para gestionar productos de un sistema de venta de productos ecológicos.
 
-## 🧩 Tecnologías Utilizadas
+El proyecto utiliza una arquitectura por capas para separar responsabilidades entre controladores REST, lógica de negocio y acceso a datos.
 
-- **Java 17**  
-- **Spring Boot 3**  
-  - Spring Web  
-  - Spring Data JPA  
-  - Spring Security  
-- **Base de datos:** MySQL / H2 (entorno de pruebas)  
-- **Maven** para gestión de dependencias y ciclo de vida del proyecto  
+## 🧩 Tecnologías utilizadas
 
-## 🧱 Arquitectura de Microservicios
+- **Java 17**
+- **Spring Boot 3.4.5**
+- **Spring Web** para APIs REST
+- **Spring Data JPA** para persistencia
+- **MySQL** como base de datos
+- **H2** para pruebas, cuando corresponde a la configuración del entorno
+- **Maven** para gestión de dependencias y ciclo de vida
+- **JUnit 5 / Mockito** para pruebas
+- **OpenAPI / Swagger UI** para documentación de la API
+- **Spring HATEOAS**
 
-El sistema está compuesto por los siguientes microservicios independientes y escalables, comunicándose a través de una API Gateway:
+## 🏗️ Arquitectura
 
-1. **productos-service**  
-   - Gestión integral de productos: creación, actualización, eliminación y consulta.
+El backend está organizado mediante una arquitectura por capas:
 
-2. **compras-service**  
-   - Manejo de compras y pedidos, procesamiento de transacciones.
+```text
+Cliente HTTP
+     │
+     ▼
+Controllers REST
+     │
+     ▼
+Services
+     │
+     ▼
+Repositories
+     │
+     ▼
+MySQL
+```
 
-3. **usuarios-service**  
-   - Autenticación, autorización y gestión de roles, implementado con Spring Security.
+### Componentes principales
 
-4. **config-server**  
-   - Configuración centralizada para los distintos microservicios, facilitando la gestión de parámetros.
+- **Controller:** expone los endpoints HTTP y gestiona las solicitudes REST.
+- **Service:** concentra la lógica de negocio.
+- **Repository:** abstrae el acceso a datos mediante Spring Data JPA.
+- **Model:** representa las entidades persistidas.
+- **DTO:** permite validar y transportar datos de entrada de la API.
+- **Exception Handler:** centraliza el manejo de errores y respuestas HTTP.
 
-5. **gateway**  
-   - API Gateway encargado de enrutar el tráfico y unificar el acceso a los servicios.
+## 🚀 Funcionalidades
 
-## Nota sobre despliegue
+### Gestión de productos
 
-Este proyecto está diseñado para ser fácilmente desplegado en entornos productivos y en la nube, sin embargo, debido a los alcances establecidos en la pauta de evaluación, la etapa de despliegue en la nube no fue implementada ni evaluada en este trabajo.
+La API permite:
 
-## ✅ Funcionalidades Principales
+- Crear productos.
+- Consultar un producto por ID.
+- Listar productos.
+- Actualizar productos.
+- Eliminar productos.
+- Buscar productos por nombre.
 
-- Gestión completa de productos con operaciones CRUD.  
-- Proceso de compras optimizado con control de stock y pedidos.  
-- Seguridad robusta mediante autenticación y autorización.  
-- Configuración centralizada para mayor flexibilidad.  
-- Arquitectura desacoplada que permite escalabilidad y mantenimiento sencillo.
+Endpoint principal:
 
----
+```text
+/api/productos
+```
 
-Este backend está preparado para integrarse en entornos fullstack, facilitando la expansión y adaptación según necesidades futuras.  
+## 🔎 Validación y manejo de errores
+
+Las solicitudes de creación y actualización utilizan validación mediante `@Valid` y DTOs.
+
+Los errores de validación responden con **400 Bad Request**, mientras que los recursos inexistentes responden con **404 Not Found**.
+
+Los errores inesperados se manejan mediante un `@RestControllerAdvice`, evitando exponer detalles internos de la aplicación en la respuesta HTTP.
+
+## 📚 Documentación de API
+
+El proyecto integra **OpenAPI / Swagger UI** para facilitar la documentación y exploración de los endpoints REST.
+
+## 🧪 Testing
+
+El proyecto incorpora dependencias de **JUnit 5 y Mockito** para pruebas automatizadas de la aplicación y sus componentes.
+
+## ☁️ Alcance del proyecto
+
+Este repositorio corresponde a un proyecto académico enfocado en el desarrollo backend y la construcción de una API REST con Spring Boot.
+
+El proyecto no representa actualmente una arquitectura completa de microservicios ni un despliegue productivo en la nube. Esos conceptos forman parte de otros proyectos del perfil y de la evolución académica del autor.
+
+## 🎯 Objetivo de aprendizaje
+
+El proyecto fue desarrollado para consolidar conocimientos en:
+
+- Desarrollo de APIs REST.
+- Arquitectura por capas.
+- Inyección de dependencias.
+- Persistencia con JPA.
+- Validación de datos.
+- Manejo centralizado de excepciones.
+- Testing con JUnit y Mockito.
+- Documentación de APIs mediante OpenAPI.
