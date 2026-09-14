@@ -10,7 +10,7 @@ El proyecto utiliza una arquitectura por capas para separar responsabilidades en
 - **Spring Boot 3.4.5**
 - **Spring Web** para APIs REST
 - **Spring Data JPA** para persistencia
-- **MySQL** como base de datos
+- **MariaDB** como base de datos
 - **Maven** para gestión de dependencias y ciclo de vida
 - **JUnit 5 / Mockito** para pruebas
 - **OpenAPI / Swagger UI** para documentación de la API
@@ -33,7 +33,7 @@ Services
 Repositories
      │
      ▼
-MySQL
+MariaDB
 ```
 
 ### Componentes principales
@@ -101,7 +101,7 @@ Actualmente se incluyen pruebas unitarias para servicios y una prueba de carga d
 
 ## ⚙️ Configuración
 
-La aplicación utiliza MySQL para persistencia. La configuración de conexión puede definirse mediante variables de entorno:
+La aplicación utiliza MariaDB para persistencia. La configuración de conexión puede definirse mediante variables de entorno:
 
 ```text
 DB_URL
