@@ -1,6 +1,6 @@
 # 🌱 Ecomarket-SPA – Backend REST para Gestión de Productos
 
-Backend académico desarrollado con **Java 17 y Spring Boot** para gestionar productos de un sistema de venta de productos ecológicos.
+Backend académico desarrollado con **Java 17 y Spring Boot** para gestionar productos y proveedores de un sistema de venta de productos ecológicos.
 
 El proyecto utiliza una arquitectura por capas para separar responsabilidades entre controladores REST, lógica de negocio y acceso a datos.
 
@@ -11,11 +11,10 @@ El proyecto utiliza una arquitectura por capas para separar responsabilidades en
 - **Spring Web** para APIs REST
 - **Spring Data JPA** para persistencia
 - **MySQL** como base de datos
-- **H2** para pruebas, cuando corresponde a la configuración del entorno
 - **Maven** para gestión de dependencias y ciclo de vida
 - **JUnit 5 / Mockito** para pruebas
 - **OpenAPI / Swagger UI** para documentación de la API
-- **Spring HATEOAS**
+- **Spring HATEOAS** para enlaces hipermedia
 
 ## 🏗️ Arquitectura
 
@@ -65,9 +64,26 @@ Endpoint principal:
 /api/productos
 ```
 
+### Gestión de proveedores
+
+La API también permite:
+
+- Crear proveedores.
+- Consultar proveedores por ID.
+- Listar proveedores.
+- Actualizar proveedores.
+- Eliminar proveedores.
+- Buscar proveedores por nombre.
+
+Endpoint principal:
+
+```text
+/api/proveedores
+```
+
 ## 🔎 Validación y manejo de errores
 
-Las solicitudes de creación y actualización utilizan validación mediante `@Valid` y DTOs.
+Las solicitudes de productos utilizan validación mediante `@Valid` y DTOs.
 
 Los errores de validación responden con **400 Bad Request**, mientras que los recursos inexistentes responden con **404 Not Found**.
 
@@ -79,11 +95,25 @@ El proyecto integra **OpenAPI / Swagger UI** para facilitar la documentación y 
 
 ## 🧪 Testing
 
-El proyecto incorpora dependencias de **JUnit 5 y Mockito** para pruebas automatizadas de la aplicación y sus componentes.
+El proyecto incorpora **JUnit 5 y Mockito** para pruebas automatizadas de componentes del backend.
+
+Actualmente se incluyen pruebas unitarias para servicios y una prueba de carga del contexto de Spring Boot.
+
+## ⚙️ Configuración
+
+La aplicación utiliza MySQL para persistencia. La configuración de conexión puede definirse mediante variables de entorno:
+
+```text
+DB_URL
+DB_USERNAME
+DB_PASSWORD
+```
+
+Si no se proporcionan, la aplicación utiliza valores locales por defecto para facilitar el desarrollo.
 
 ## ☁️ Alcance del proyecto
 
-Este repositorio corresponde a un proyecto académico enfocado en el desarrollo backend y la construcción de una API REST con Spring Boot.
+Este repositorio corresponde a un proyecto académico enfocado en el desarrollo backend y la construcción de APIs REST con Spring Boot.
 
 El proyecto no representa actualmente una arquitectura completa de microservicios ni un despliegue productivo en la nube. Esos conceptos forman parte de otros proyectos del perfil y de la evolución académica del autor.
 
@@ -99,3 +129,4 @@ El proyecto fue desarrollado para consolidar conocimientos en:
 - Manejo centralizado de excepciones.
 - Testing con JUnit y Mockito.
 - Documentación de APIs mediante OpenAPI.
+- HATEOAS.
