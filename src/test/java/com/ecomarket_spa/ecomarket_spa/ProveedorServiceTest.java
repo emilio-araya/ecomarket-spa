@@ -26,7 +26,7 @@ class ProveedorServiceTest {
 
     @Test
     void obtenerProveedorPorId_retornaProveedorExistente() {
-        Proveedor p = new Proveedor(1L, "Proveedor X");
+        Proveedor p = new Proveedor(1L, "Proveedor X", "999999999", "Direccion X");
         when(proveedorRepository.findById(1L)).thenReturn(Optional.of(p));
 
         Proveedor resultado = proveedorService.obtenerProveedorPorId(1L);
@@ -48,8 +48,8 @@ class ProveedorServiceTest {
 
     @Test
     void guardarProveedor_retornaProveedorGuardado() {
-        Proveedor p = new Proveedor(null, "Nuevo Proveedor");
-        Proveedor pGuardado = new Proveedor(2L, "Nuevo Proveedor");
+        Proveedor p = new Proveedor(null, "Nuevo Proveedor", "999999999", "Direccion nueva");
+        Proveedor pGuardado = new Proveedor(2L, "Nuevo Proveedor", "999999999", "Direccion nueva");
 
         when(proveedorRepository.save(p)).thenReturn(pGuardado);
 
