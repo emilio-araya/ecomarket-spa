@@ -2,8 +2,6 @@ package com.ecomarket_spa.ecomarket_spa.service;
 
 import com.ecomarket_spa.ecomarket_spa.model.Proveedor;
 import com.ecomarket_spa.ecomarket_spa.repository.ProveedorRepository;
-import com.ecomarket_spa.ecomarket_spa.service.ProveedorService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,8 +10,11 @@ import java.util.Optional;
 @Service
 public class ProveedorServiceImpl implements ProveedorService {
 
-    @Autowired
-    private ProveedorRepository proveedorRepository;
+    private final ProveedorRepository proveedorRepository;
+
+    public ProveedorServiceImpl(ProveedorRepository proveedorRepository) {
+        this.proveedorRepository = proveedorRepository;
+    }
 
     @Override
     public Proveedor guardarProveedor(Proveedor proveedor) {
