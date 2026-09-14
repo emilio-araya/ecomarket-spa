@@ -1,4 +1,4 @@
-package com.ecomarket_spa.ecomarket_spa.service;
+package com.ecomarket_spa.ecomarket_spa;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.ecomarket_spa.ecomarket_spa.model.Proveedor;
 import com.ecomarket_spa.ecomarket_spa.repository.ProveedorRepository;
+import com.ecomarket_spa.ecomarket_spa.service.ProveedorServiceImpl;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,27 +22,27 @@ class ProveedorServiceTest {
     private ProveedorRepository proveedorRepository;
 
     @InjectMocks
-    private ProveedorService proveedorService;
+    private ProveedorServiceImpl proveedorService;
 
     @Test
     void obtenerProveedorPorId_retornaProveedorExistente() {
         Proveedor p = new Proveedor(1L, "Proveedor X");
         when(proveedorRepository.findById(1L)).thenReturn(Optional.of(p));
 
-        Optional<Proveedor> resultado = proveedorService.obtenerProveedorPorId(1L);
+        Proveedor resultado = proveedorService.obtenerProveedorPorId(1L);
 
-        assertTrue(resultado.isPresent());
-        assertEquals("Proveedor X", resultado.get().getNombre());
+        assertNotNull(resultado);
+        assertEquals("Proveedor X", resultado.getNombre());
         verify(proveedorRepository).findById(1L);
     }
 
     @Test
-    void obtenerProveedorPorId_retornaVacioCuandoNoExiste() {
+    void obtenerProveedorPorId_retornaNullCuandoNoExiste() {
         when(proveedorRepository.findById(99L)).thenReturn(Optional.empty());
 
-        Optional<Proveedor> resultado = proveedorService.obtenerProveedorPorId(99L);
+        Proveedor resultado = proveedorService.obtenerProveedorPorId(99L);
 
-        assertFalse(resultado.isPresent());
+        assertNull(resultado);
         verify(proveedorRepository).findById(99L);
     }
 
@@ -54,7 +55,8 @@ class ProveedorServiceTest {
 
         Proveedor resultado = proveedorService.guardarProveedor(p);
 
-        assertNotNull(resultado.getId());
+        assertNotNull(resultado);
+        assertEquals(2L, resultado.getId());
         assertEquals("Nuevo Proveedor", resultado.getNombre());
         verify(proveedorRepository).save(p);
     }
