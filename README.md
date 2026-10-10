@@ -1,5 +1,7 @@
 # 🌱 Ecomarket-SPA – Backend REST para Gestión de Productos
 
+[![CI](https://github.com/emilio-araya/ecomarket-spa/actions/workflows/ci.yml/badge.svg)](https://github.com/emilio-araya/ecomarket-spa/actions/workflows/ci.yml)
+
 Backend académico desarrollado con **Java 17 y Spring Boot** para gestionar productos y proveedores de un sistema de venta de productos ecológicos.
 
 El proyecto utiliza una arquitectura por capas para separar responsabilidades entre controladores REST, lógica de negocio y acceso a datos.
@@ -110,6 +112,44 @@ DB_PASSWORD
 ```
 
 Si no se proporcionan, la aplicación utiliza valores locales por defecto para facilitar el desarrollo.
+
+## ▶️ Cómo ejecutarlo
+
+Requisitos: Java 17 y una base MariaDB. El wrapper de Maven (`mvnw`) viene incluido.
+
+1. Levantar MariaDB (por ejemplo, con Docker):
+
+   ```bash
+   docker run -d --name ecomarket-db \
+     -e MARIADB_ROOT_PASSWORD=root \
+     -e MARIADB_DATABASE=db_ecomarket \
+     -e MARIADB_USER=ecomarket_user \
+     -e MARIADB_PASSWORD=ecomarket_pass \
+     -p 3306:3306 mariadb:11
+   ```
+
+2. (Opcional) Cargar datos de ejemplo con [`database/schema.sql`](database/schema.sql):
+
+   ```bash
+   docker exec -i ecomarket-db mariadb -uroot -proot < database/schema.sql
+   ```
+
+3. Ejecutar la aplicación:
+
+   ```bash
+   export DB_PASSWORD=ecomarket_pass
+   ./mvnw spring-boot:run
+   ```
+
+   La API queda en `http://localhost:8080` y Swagger UI en `http://localhost:8080/swagger-ui.html`.
+
+4. Ejecutar los tests (la prueba de contexto necesita la base de datos levantada):
+
+   ```bash
+   DB_PASSWORD=ecomarket_pass ./mvnw verify
+   ```
+
+El workflow de GitHub Actions ejecuta estos mismos tests contra MariaDB en cada push.
 
 ## ☁️ Alcance del proyecto
 
