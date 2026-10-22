@@ -99,7 +99,10 @@ El proyecto integra **OpenAPI / Swagger UI** para facilitar la documentación y 
 
 El proyecto incorpora **JUnit 5 y Mockito** para pruebas automatizadas de componentes del backend.
 
-Actualmente se incluyen pruebas unitarias para servicios y una prueba de carga del contexto de Spring Boot.
+La suite cubre dos niveles: pruebas unitarias de servicio con repositorios simulados y pruebas de integración del
+contrato HTTP (`ProductoController`), que fijan códigos de estado, validación de entrada y mapeo de errores. En local
+los tests corren sobre H2 en memoria, sin infraestructura; en CI el workflow define `DB_URL` y la misma suite se
+ejecuta contra MariaDB.
 
 ## ⚙️ Configuración
 
@@ -143,10 +146,10 @@ Requisitos: Java 17 y una base MariaDB. El wrapper de Maven (`mvnw`) viene inclu
 
    La API queda en `http://localhost:8080` y Swagger UI en `http://localhost:8080/swagger-ui.html`.
 
-4. Ejecutar los tests (la prueba de contexto necesita la base de datos levantada):
+4. Ejecutar los tests (no necesitan base de datos levantada; usan H2 en memoria):
 
    ```bash
-   DB_PASSWORD=ecomarket_pass ./mvnw verify
+   ./mvnw verify
    ```
 
 El workflow de GitHub Actions ejecuta estos mismos tests contra MariaDB en cada push.

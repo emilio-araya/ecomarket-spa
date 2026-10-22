@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -89,5 +90,45 @@ class ProductoServiceTest {
         assertThrows(NoSuchElementException.class,
                 () -> productoService.eliminarProducto(99L));
         verify(productoRepository, never()).deleteById(anyLong());
+    }
+
+    @Test
+    void actualizarProducto_copiaLosCamposSobreElExistente() {
+        Producto existente = new Producto(1L, "Té", "Saquitos", 1990.0, 8, "Almacén");
+        Producto cambios = new Producto(null, "Té verde", "Saquitos x20", 2590.0, 15, "Almacén");
+
+        when(productoRepository.findById(1L)).thenReturn(Optional.of(existente));
+        when(productoRepository.save(existente)).thenReturn(existente);
+
+        Producto resultado = productoService.actualizarProducto(1L, cambios);
+
+        assertEquals(1L, resultado.getId());
+        assertEquals("Té verde", resultado.getNombre());
+        assertEquals("Saquitos x20", resultado.getDescripcion());
+        assertEquals(2590.0, resultado.getPrecio());
+        assertEquals(15, resultado.getStock());
+        assertEquals("Almacén", resultado.getCategoria());
+        verify(productoRepository).save(existente);
+    }
+
+    @Test
+    void actualizarProducto_lanzaExcepcionCuandoNoExiste() {
+        when(productoRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(NoSuchElementException.class,
+                () -> productoService.actualizarProducto(99L, new Producto()));
+
+        verify(productoRepository, never()).save(any());
+    }
+
+    @Test
+    void buscarProductosPorNombre_delegaEnElRepositorio() {
+        Producto yerba = new Producto();
+        when(productoRepository.findByNombreContaining("Yer")).thenReturn(List.of(yerba));
+
+        var resultado = productoService.buscarProductosPorNombre("Yer");
+
+        assertEquals(List.of(yerba), resultado);
+        verify(productoRepository).findByNombreContaining("Yer");
     }
 }
